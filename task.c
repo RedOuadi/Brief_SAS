@@ -49,7 +49,7 @@ int main() {
         printf("* 5. Ordonner les taches*\n");
         printf("* 6. Filtrer par priorite*\n");
         printf("* 7. Filtrer par statut *\n");
-        printf("* 0. Quitter pour sauvgarder*\n");
+        printf("* 0. Quitter pour sauvgarder *\n");
         printf("**************************\n");
 
         printf("Choisissez une option : ");
