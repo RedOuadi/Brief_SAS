@@ -4,7 +4,7 @@
 
 #define MAX_DESCRIPTION_LENGTH 100
 #define MAX_TASKS 100
-//
+
 typedef struct {
     int day;
     int month;
@@ -49,7 +49,7 @@ int main() {
         printf("* 5. Ordonner les taches*\n");
         printf("* 6. Filtrer par priorite*\n");
         printf("* 7. Filtrer par statut *\n");
-        printf("* 0. Quitter            *\n");
+        printf("* 0. Quitter pour sauvgarder*\n");
         printf("**************************\n");
 
         printf("Choisissez une option : ");
@@ -101,46 +101,6 @@ int main() {
     return 0;
 }
 
-void saveTasksToFile() {
-    FILE *file = fopen("tasks.txt", "w");
-    if (file == NULL) {
-        printf("Erreur lors de l'ouverture du fichier de sauvegarde.\n");
-        return;
-    }
-
-    fprintf(file, "Liste des taches :\n");
-    for (int i = 0; i < taskCount; i++) {
-        fprintf(file, "Tache %d :\n", i + 1);
-        fprintf(file, "Description : %s\n", tasks[i].description);
-        fprintf(file, "Date d'echeance : %d/%d/%d\n", tasks[i].date.day, tasks[i].date.month, tasks[i].date.year);
-        fprintf(file, "Priorite : %d\n", tasks[i].priority);
-        fprintf(file, "Statut : %s\n", tasks[i].status ? "Complete" : "Incomplete");
-        fprintf(file, "--------------------\n");
-    }
-
-    fclose(file);
-}
-
-void loadTasksFromFile() {
-    FILE *file = fopen("tasks.txt", "r");
-    if (file == NULL) {
-        printf("Le fichier de sauvegarde n'existe pas encore.\n");
-        return;
-    }
-
-    taskCount = 0;
-
-    while (fscanf(file, "Tache %*d :\nDescription : %s\nDate d'echeance : %d/%d/%d\nPriorite : %d\nStatut : %*s\n--------------------\n",
-                  tasks[taskCount].description, &tasks[taskCount].date.day, &tasks[taskCount].date.month,
-                  &tasks[taskCount].date.year, &tasks[taskCount].priority) != EOF) {
-        char status[20];
-        fscanf(file, "Statut : %s\n--------------------\n", status);
-        tasks[taskCount].status = (strcmp(status, "Complete") == 0) ? 1 : 0;
-        taskCount++;
-    }
-
-    fclose(file);
-}
 
 void addTask() {
     printf("Entrez la description de la tache : ");
@@ -282,4 +242,43 @@ void filterTasksByStatus(int status) {
         }
     }
 }
+void saveTasksToFile() {
+    FILE *file = fopen("tasks.txt", "w");
+    if (file == NULL) {
+        printf("Erreur lors de l'ouverture du fichier de sauvegarde.\n");
+        return;
+    }
 
+    fprintf(file, "Liste des taches :\n");
+    for (int i = 0; i < taskCount; i++) {
+        fprintf(file, "Tache %d :\n", i + 1);
+        fprintf(file, "Description : %s\n", tasks[i].description);
+        fprintf(file, "Date d'echeance : %d/%d/%d\n", tasks[i].date.day, tasks[i].date.month, tasks[i].date.year);
+        fprintf(file, "Priorite : %d\n", tasks[i].priority);
+        fprintf(file, "Statut : %s\n", tasks[i].status ? "Complete" : "Incomplete");
+        fprintf(file, "--------------------\n");
+    }
+
+    fclose(file);
+}
+
+void loadTasksFromFile() {
+    FILE *file = fopen("tasks.txt", "r");
+    if (file == NULL) {
+        printf("Le fichier de sauvegarde n'existe pas encore.\n");
+        return;
+    }
+
+    taskCount = 0;
+
+    while (fscanf(file, "Tache %*d :\nDescription : %s\nDate d'echeance : %d/%d/%d\nPriorite : %d\nStatut : %*s\n--------------------\n",
+                  tasks[taskCount].description, &tasks[taskCount].date.day, &tasks[taskCount].date.month,
+                  &tasks[taskCount].date.year, &tasks[taskCount].priority) != EOF) {
+        char status[20];
+        fscanf(file, "Statut : %s\n--------------------\n", status);
+        tasks[taskCount].status = (strcmp(status, "Complete") == 0) ? 1 : 0;
+        taskCount++;
+    }
+
+    fclose(file);
+}
