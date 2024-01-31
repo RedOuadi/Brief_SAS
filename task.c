@@ -4,7 +4,7 @@
 
 #define MAX_DESCRIPTION_LENGTH 100
 #define MAX_TASKS 100
-//
+
 typedef struct {
     int day;
     int month;
